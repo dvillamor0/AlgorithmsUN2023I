@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h> 
+
 int main()
 {
 int n;
@@ -7,31 +9,36 @@ int tiempo = 0;
 for(n=0;n<10;n++){
     time_t inicial, final;
     time(&inicial);
-    matmul(random_matrix(600,100),random_matrix(100,600));
-    time(&final);
-    tiempo +=  difftime(final,inicial);
-}
-
-printf(tiempo + "0");
-
-}
-
-int** random_matrix(int m, int n){
-    int out[m][n];
+    
+    int ma,na,mb,nb;
+    ma = 600;
+    na = 100;
+    
+    mb = 100;
+    nb = 600;
+    
+    int A[ma][na];
+    int B[mb][nb];
     int row,col;
-    for (row=0;row<m;row++){
-        for(col=0;col<n;col++){
-            out[row][col] = rand();
+    for (row=0;row<ma;row++){
+        for(col=0;col<na;col++){
+            A[row][col] = rand();
         }
     }
-    return out;
-}
 
-int** matmul(int** A, int** B){
+    for (row=0;row<mb;row++){
+        for(col=0;col<nb;col++){
+            B[row][col] = rand();
+        }
+    }
+
     int rows_out = sizeof(A);
     int cols_out = sizeof(B[0]);
-    
-    if(sizeof(A) == sizeof(B[0])){
+    int largoa = sizeof(A) / sizeof(A[0]);
+    int largob = sizeof(B[0]) / sizeof(int);
+    printf("largoa: %d \n",largoa);
+    printf("largob: %d \n",largob);
+    if(largoa == largob){
 
         int out[rows_out][cols_out];
         int i, j ,k;
@@ -43,9 +50,14 @@ int** matmul(int** A, int** B){
                 }
             }
         }
-        return out;
     }else{
         printf("no se pueden multiplicar len(A)!= len(B[0])");
-        return 0;
     }
+    
+    time(&final);
+    tiempo +=  difftime(final,inicial);
+}
+
+printf("tiempo: %d",tiempo);
+
 }
